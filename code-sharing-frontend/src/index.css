@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  display: grid;
+  place-items: center;
+  height: 100vh;
+  background-image: url('/Hero-Background-notecode.svg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #BE29EC;
+}
