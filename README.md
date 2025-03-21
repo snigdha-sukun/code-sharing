@@ -4,9 +4,9 @@
 
    Solution for a challenge [Coding Sharing](https://devchallenges.io/challenge/code-shraing-app-note-code) from [devChallenges.io](http://devchallenges.io).
 
-  **[Demo](https://your-demo-link.your-domain)**
+  **[Demo](https://code-sharing-frontend-two.vercel.app/)**
   |
-  **[Solution](https://your-url-to-the-solution)**
+  **[Solution](https://github.com/snigdha-sukun/code-sharing)**
   |
   **[Challenge](https://devchallenges.io/challenge/code-shraing-app-note-code)**
 
