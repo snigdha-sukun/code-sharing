@@ -29,11 +29,7 @@ function App() {
 	const [editorValue, setEditorValue] = useState(value);
 	const [link, setLink] = useState<string | undefined>();
 
-	const pathname = window.location.pathname;
-	console.log("🚀 ~ App ~ pathname:", pathname)
-
 	const id = window.location.pathname.split("/").pop();
-	console.log("🚀 ~ App ~ id:", id);
 	const snippet: Snippet | undefined = useFetchSnippet(id);
 	const saveSnippet = useSaveSnippet({
 		code: editorValue,
@@ -42,7 +38,6 @@ function App() {
 	});
 
 	useEffect(() => {
-		console.log("🚀 ~ App ~ snippet:", snippet);
 		if (snippet) {
 			setEditorValue(snippet.code.join("\n"));
 			setSelectedLanguage(snippet.language);
