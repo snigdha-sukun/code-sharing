@@ -7,9 +7,10 @@ import cors from "cors";
 import mongoose from "mongoose";
 import createError from "http-errors";
 import logger from "morgan";
+import type { VercelRequest, VercelResponse } from "@vercel/node";
 
-import snippetRouter from "./routes/snippets";
-import { normalizePort, onError, onListening } from "./utils/server.util";
+import snippetRouter from "../routes/snippets";
+import { normalizePort, onError, onListening } from "../utils/server.util";
 
 const app: Express = express();
 
@@ -49,6 +50,10 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 	res.status(err.status ?? 500);
 	res.json({ error: err.message });
 });
+
+export default (req: VercelRequest, res: VercelResponse) => {
+	return app(req, res);
+};
 
 const port = normalizePort(process.env.PORT ?? "3000");
 app.set("port", port);
