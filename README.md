@@ -36,11 +36,9 @@
 I learned how to setup a Node.js+Express application with mongoose, body parser & cors:
 
 ```ts
-
 import { config } from "dotenv";
 import express from "express";
 import type { Express, Request, Response, NextFunction } from "express";
-import http from "node:http";
 import bodyParser from "body-parser";
 import cors from "cors";
 import mongoose from "mongoose";
@@ -57,9 +55,9 @@ app.use(bodyParser.json());
 
 app.use("/api/snippets", snippetRouter);
 
-main().catch((err) => console.log(err));
+connectDB().catch((err) => console.log(err));
 
-async function main() {
+async function connectDB() {
  config();
  const MONGODB_URI = process.env.MONGODB_URI?.replace(
   "${MONGODB_PASSWORD}",
@@ -88,11 +86,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
  res.json({ error: err.message });
 });
 
-const port = normalizePort(process.env.PORT ?? "3000");
-app.set("port", port);
-
-const server = http.createServer(app);
-server.listen(port, () => console.log(`Server is running on port ${port}`));
+export default app;
 ```
 
 I learned how to create mongoose schema and use uuid as a type:
@@ -160,16 +154,59 @@ I learned the necessary variables to add for configuring Typescript in Node appl
   "compilerOptions": {
     "target": "ES6",
     "module": "commonjs",
-    "outDir": "./dist", // Output directory for compiled files
-    "rootDir": "./src", // Root directory for TypeScript files
+    "outDir": "./dist",
+    "rootDir": "./",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src/**/*"], // Include all files in the src directory
-  "exclude": ["node_modules", "dist"] // Exclude node_modules
+  "include": [
+    "src/**/*",
+    "api/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }
+```
+
+I learned how to deploy Node+Express application to vercel by rearranging files in their correct position and adding `public/.gitkeep` to keep the public folder need for vercel, moving local port to server.ts, adding an `api/index.ts` folder to export express `app`, modifying tsconfig to accomodate api folder and adding vercel.json:
+
+```json
+{
+    "version": 2,
+    "rewrites": [
+        {
+            "source": "/(.*)",
+            "destination": "/api"
+        }
+    ]
+}
+```
+
+```ts
+import http from "node:http";
+
+import app from "./app";
+import { normalizePort, onError, onListening } from "./utils/server.util";
+
+if (process.env.NODE_ENV !== "production") {
+	const port = normalizePort(process.env.PORT ?? "3000");
+	app.set("port", port);
+
+	const server = http.createServer(app);
+	server.listen(port, () => console.log(`Server is running on port ${port}`));
+	server.on("error", (error) => onError(error, port));
+	server.on("listening", () => onListening(server));
+}
+```
+
+```ts
+import app from "../src/app";
+
+export default app;
 ```
 
 #### Frontend
@@ -317,6 +354,20 @@ export const getDefaultValue = () => {
 };
 ```
 
+I learned how to deploy React application which uses `window.location.pathname` & `window.location.origin` by adding vercel.json:
+
+```json
+{
+    "version": 2,
+    "rewrites": [
+        {
+            "source": "/(.*)",
+            "destination": "/"
+        }
+    ]
+}
+```
+
 ### Useful resources
 
 - [React-redux get site base URL / window.location](https://stackoverflow.com/a/66899505) - This helped me in fetching the correct base URL to construct shared URL
@@ -328,6 +379,7 @@ export const getDefaultValue = () => {
 - [Using UUIDs in mongoose for ObjectID references](https://stackoverflow.com/a/67701726) - I learned how to define uuid type in mongoose
 - [How to Install MongoDB Using npm](https://www.mongodb.com/resources/languages/mongodb-and-npm-tutorial) - I learned how to add & use `.env` in Node.js+Express application
 - [Creating a new Express project with Typescript](https://medium.com/layhill-l-tech/creating-a-new-express-project-with-typescript-7e023ed3feda) - This article helped me in setting up my Node.js+Express application with Typescript
+- [Deploy an Express API to Vercel](https://www.youtube.com/watch?v=B-T69_VP2Ls) - This video helped me deploy my Express app in Vercel
 
 ### Built with
 
