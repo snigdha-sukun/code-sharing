@@ -43,7 +43,7 @@ export const StyledDropdownList = styled.ul`
 `;
 
 export const StyledDropdownItem = styled.li<{ $isSelected: boolean }>`
-  padding: 1rem;
+  padding: 0.5rem;
   background-color: ${({ theme }) => theme.colors.dropdown};
   color: ${({ theme }) => theme.colors.text};
   font-weight: ${({ $isSelected, theme }) =>
