@@ -29,6 +29,9 @@ function App() {
 	const [editorValue, setEditorValue] = useState(value);
 	const [link, setLink] = useState<string | undefined>();
 
+	const pathname = window.location.pathname;
+	console.log("🚀 ~ App ~ pathname:", pathname)
+
 	const id = window.location.pathname.split("/").pop();
 	console.log("🚀 ~ App ~ id:", id);
 	const snippet: Snippet | undefined = useFetchSnippet(id);
