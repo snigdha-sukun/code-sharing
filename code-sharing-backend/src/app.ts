@@ -11,7 +11,14 @@ import snippetRouter from "./routes/snippets";
 
 const app: Express = express();
 
-app.use(cors());
+app.use(
+	cors({
+		origin: "https://code-sharing-frontend-two.vercel.app", // Replace with your frontend URL
+		methods: ["GET", "POST",], // Allow necessary HTTP methods
+		allowedHeaders: ["Content-Type"], // Allow necessary headers
+	}),
+);
+
 app.use(logger("dev"));
 app.use(bodyParser.json());
 
