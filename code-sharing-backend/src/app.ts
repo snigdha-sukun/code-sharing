@@ -1,7 +1,6 @@
 import { config } from "dotenv";
 import express from "express";
 import type { Express, Request, Response, NextFunction } from "express";
-import http from "node:http";
 import bodyParser from "body-parser";
 import cors from "cors";
 import mongoose from "mongoose";
@@ -9,7 +8,6 @@ import createError from "http-errors";
 import logger from "morgan";
 
 import snippetRouter from "./routes/snippets";
-import { normalizePort, onError, onListening } from "./utils/server.util";
 
 const app: Express = express();
 
@@ -19,9 +17,9 @@ app.use(bodyParser.json());
 
 app.use("/api/snippets", snippetRouter);
 
-main().catch((err) => console.log(err));
+connectDB().catch((err) => console.log(err));
 
-async function main() {
+async function connectDB() {
 	config();
 	const MONGODB_URI = process.env.MONGODB_URI?.replace(
 		"${MONGODB_PASSWORD}",
@@ -49,15 +47,5 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 	res.status(err.status ?? 500);
 	res.json({ error: err.message });
 });
-
-if (process.env.NODE_ENV !== "production") {
-	const port = normalizePort(process.env.PORT ?? "3000");
-	app.set("port", port);
-
-	const server = http.createServer(app);
-	server.listen(port, () => console.log(`Server is running on port ${port}`));
-	server.on("error", (error) => onError(error, port));
-	server.on("listening", () => onListening(server));
-}
 
 export default app;
